@@ -15,8 +15,8 @@ import { goalService } from "@/services/api/goalService";
 const Goals = () => {
   const [goals, setGoals] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-const [showAddModal, setShowAddModal] = useState(false)
+const [error, setError] = useState('')
+  const [showAddModal, setShowAddModal] = useState(false)
   const [showTemplateModal, setShowTemplateModal] = useState(false)
   const [selectedTemplate, setSelectedTemplate] = useState(null)
   const [templateFilter, setTemplateFilter] = useState('all')
@@ -29,31 +29,30 @@ const [showAddModal, setShowAddModal] = useState(false)
     tasks: []
   })
 
-  const categories = [
+const categories = [
     { value: 'health', label: 'Health & Fitness', icon: 'Heart', color: 'from-accent to-emerald-600' },
     { value: 'work', label: 'Work & Career', icon: 'Briefcase', color: 'from-primary to-secondary' },
     { value: 'personal', label: 'Personal Growth', icon: 'User', color: 'from-purple-500 to-pink-600' }
   ]
 
-useEffect(() => {
+  useEffect(() => {
     loadGoals()
     loadTemplates()
   }, [])
-
+  
   const loadGoals = async () => {
     try {
       setLoading(true)
       setError('')
       const data = await goalService.getAll()
       setGoals(data)
-    } catch (err) {
+} catch (err) {
       setError('Failed to load goals')
       console.error('Goals error:', err)
     } finally {
       setLoading(false)
     }
-}
-
+  }
   const loadTemplates = async () => {
     try {
       setTemplatesLoading(true)
@@ -171,7 +170,7 @@ useEffect(() => {
   return (
     <div className="space-y-8">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">
             Goals & Progress
@@ -179,7 +178,7 @@ useEffect(() => {
           <p className="text-lg text-gray-600">
             Track your goals and adapt tasks to your energy levels
           </p>
-</div>
+        </div>
         <div className="flex space-x-3">
           <Button
             onClick={() => setShowTemplateModal(true)}
@@ -249,13 +248,13 @@ useEffect(() => {
       {goals.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {goals.map((goal, index) => (
-            <motion.div
+<motion.div
               key={goal.Id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-<GoalCard
+              <GoalCard
                 goal={goal}
                 onComplete={(taskId) => handleTaskComplete(goal.Id, taskId)}
                 onEdit={handleGoalEdit}
@@ -355,11 +354,10 @@ useEffect(() => {
                   Add Goal
                 </Button>
               </div>
-            </form>
+</form>
           </motion.div>
-</div>
+        </div>
       )}
-
       {/* Template Gallery Modal */}
       {showTemplateModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">

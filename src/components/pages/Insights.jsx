@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Chart from 'react-apexcharts'
 import { format, subDays, parseISO } from 'date-fns'
@@ -10,6 +10,7 @@ import Empty from '@/components/ui/Empty'
 import { moodService } from '@/services/api/moodService'
 import { goalService } from '@/services/api/goalService'
 import { biometricService } from '@/services/api/biometricService'
+
 const Insights = () => {
   const [moodData, setMoodData] = useState([])
   const [goalData, setGoalData] = useState([])
@@ -19,9 +20,9 @@ const Insights = () => {
 
   useEffect(() => {
     loadInsightData()
-  }, [])
+}, [])
 
-const loadInsightData = async () => {
+  const loadInsightData = async () => {
     try {
       setLoading(true)
       setError('')
@@ -41,9 +42,9 @@ const loadInsightData = async () => {
     } finally {
       setLoading(false)
     }
-  }
+}
 
-// Prepare 30-day data for analysis
+  // Prepare 30-day data for analysis
   const thirtyDaysAgo = subDays(new Date(), 30)
   const last30DaysMoods = moodData.filter(entry => 
     parseISO(entry.timestamp) >= thirtyDaysAgo
@@ -297,10 +298,10 @@ const loadInsightData = async () => {
     goalData.filter(g => g.category === 'health').reduce((sum, g) => sum + g.progress, 0) / Math.max(goalData.filter(g => g.category === 'health').length, 1),
     goalData.filter(g => g.category === 'work').reduce((sum, g) => sum + g.progress, 0) / Math.max(goalData.filter(g => g.category === 'work').length, 1),
     goalData.filter(g => g.category === 'personal').reduce((sum, g) => sum + g.progress, 0) / Math.max(goalData.filter(g => g.category === 'personal').length, 1)
-  ]
+]
 
-// Calculate comprehensive insights
-  const averageMood = last30DaysMoods.length > 0 
+  // Calculate comprehensive insights
+  const averageMood = last30DaysMoods.length > 0
     ? (last30DaysMoods.reduce((sum, entry) => sum + entry.moodScore, 0) / last30DaysMoods.length).toFixed(1)
     : 0
 
@@ -331,10 +332,10 @@ const loadInsightData = async () => {
     : 'stable'
 
   const sleepConsistency = biometricData.length > 0 
-    ? biometricData.filter(day => day.sleepScore > 75).length
+? biometricData.filter(day => day.sleepScore > 75).length
     : 0
+
   if (loading) {
-    return <Loading type="dashboard" />
   }
 
   if (error) {
@@ -358,17 +359,17 @@ const loadInsightData = async () => {
 
   return (
     <div className="space-y-8">
-      {/* Page Header */}
+{/* Page Header */}
       <div className="text-center md:text-left">
-<h1 className="text-3xl font-display font-bold text-gray-900 mb-2">
+        <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">
           30-Day Analytics Dashboard
         </h1>
         <p className="text-lg text-gray-600">
           Comprehensive trends and correlations in your mood, sleep, and energy levels
         </p>
-      </div>
+</div>
 
-{/* Key Metrics */}
+      {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <div className="flex items-center justify-between">
@@ -435,9 +436,9 @@ const loadInsightData = async () => {
             </div>
           </div>
         </Card>
-      </div>
+</div>
 
-{/* Main Analytics Charts */}
+      {/* Main Analytics Charts */}
       <div className="space-y-8">
         {/* 30-Day Mood Trends */}
         <Card>
@@ -513,9 +514,9 @@ const loadInsightData = async () => {
             </div>
           )}
         </Card>
-      </div>
+</div>
 
-{/* Pattern Insights & Personalized Recommendations */}
+      {/* Pattern Insights & Personalized Recommendations */}
       <div className="space-y-6">
         <h2 className="text-xl font-display font-bold text-gray-900">
           Personalized Insights & Recommendations
