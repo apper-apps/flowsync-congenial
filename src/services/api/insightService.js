@@ -339,10 +339,114 @@ const PatternAnalyzer = {
       'Use mood data to predict productivity levels',
       'Develop mood regulation strategies for important tasks'
     ]
+},
+
+  // Missing method implementations
+  analyzeEnergyTrends(biometricData) {
+    if (!Array.isArray(biometricData)) biometricData = []
+    
+    const energyData = biometricData.filter(data => data?.type === 'energy' || data?.energyLevel)
+    const recentEnergy = energyData.slice(-7)
+    
+    if (recentEnergy.length === 0) {
+      return {
+        type: 'energy_trends',
+        insights: ['No energy data available for trend analysis'],
+        recommendations: ['Start tracking energy levels to identify patterns'],
+        confidence: 0
+      }
+    }
+    
+    const energyValues = recentEnergy.map(entry => {
+      if (entry.energyScore) return entry.energyScore
+      if (entry.energyLevel === 'high') return 8
+      if (entry.energyLevel === 'medium') return 6
+      if (entry.energyLevel === 'low') return 4
+      return entry.value || 0
+    })
+    
+    const avgEnergy = energyValues.reduce((sum, val) => sum + val, 0) / energyValues.length
+    const trend = this.calculateTrend(energyValues.map(val => ({ value: val })))
+    
+    return {
+      type: 'energy_trends',
+      insights: [
+        `Average energy level: ${avgEnergy.toFixed(1)}/10`,
+        `Energy trend: ${trend > 0 ? 'Increasing' : trend < 0 ? 'Decreasing' : 'Stable'}`,
+        `Energy variability: ${this.calculateVolatility(energyValues.map(val => ({ score: val }))) > 2 ? 'High' : 'Low'}`
+      ],
+      recommendations: this.generateEnergyRecommendations(avgEnergy, 0.5),
+      confidence: this.calculateConfidence(recentEnergy.length)
+    }
+  },
+
+  analyzeGoalProgress(goalData) {
+    if (!Array.isArray(goalData)) goalData = []
+    
+    if (goalData.length === 0) {
+      return {
+        type: 'goal_progress',
+        insights: ['No goal data available for progress analysis'],
+        recommendations: ['Set some goals to track your progress'],
+        confidence: 0
+      }
+    }
+    
+    const completedGoals = goalData.filter(goal => goal?.completed || goal?.progress >= 100)
+    const activeGoals = goalData.filter(goal => !goal?.completed && (goal?.progress || 0) < 100)
+    const completionRate = goalData.length > 0 ? (completedGoals.length / goalData.length) * 100 : 0
+    
+    const avgProgress = goalData.reduce((sum, goal) => sum + (goal?.progress || 0), 0) / goalData.length
+    
+    return {
+      type: 'goal_progress',
+      insights: [
+        `Goal completion rate: ${completionRate.toFixed(1)}%`,
+        `Average progress: ${avgProgress.toFixed(1)}%`,
+        `Active goals: ${activeGoals.length}, Completed: ${completedGoals.length}`
+      ],
+      recommendations: completionRate < 50 ? 
+        ['Break down large goals into smaller tasks', 'Set more achievable deadlines', 'Review and adjust goal priorities'] :
+        ['Continue current momentum', 'Consider setting more challenging goals', 'Celebrate your achievements'],
+      confidence: this.calculateConfidence(goalData.length)
+    }
+  },
+
+  analyzeSleepPatterns(biometricData) {
+    if (!Array.isArray(biometricData)) biometricData = []
+    
+    const sleepData = biometricData.filter(data => data?.sleepScore || data?.sleepHours || data?.type === 'sleep')
+    const recentSleep = sleepData.slice(-7)
+    
+    if (recentSleep.length === 0) {
+      return {
+        type: 'sleep_patterns',
+        insights: ['No sleep data available for pattern analysis'],
+        recommendations: ['Start tracking sleep to identify patterns'],
+        confidence: 0
+      }
+    }
+    
+    const sleepScores = recentSleep.map(entry => entry?.sleepScore || entry?.value || 0)
+    const sleepHours = recentSleep.map(entry => entry?.sleepHours || entry?.duration || 0)
+    
+    const avgSleepScore = sleepScores.reduce((sum, score) => sum + score, 0) / sleepScores.length
+    const avgSleepHours = sleepHours.reduce((sum, hours) => sum + hours, 0) / sleepHours.length
+    const sleepTrend = this.calculateTrend(sleepScores.map(score => ({ value: score })))
+    
+    return {
+      type: 'sleep_patterns',
+      insights: [
+        `Average sleep score: ${avgSleepScore.toFixed(1)}/100`,
+        `Average sleep duration: ${avgSleepHours.toFixed(1)} hours`,
+        `Sleep trend: ${sleepTrend > 0 ? 'Improving' : sleepTrend < 0 ? 'Declining' : 'Stable'}`
+      ],
+      recommendations: this.generateSleepRecommendations(avgSleepHours, avgSleepScore / 100),
+      confidence: this.calculateConfidence(recentSleep.length)
+confidence: this.calculateConfidence(recentSleep.length)
   }
 }
-
-export const insightService = {
+}
   async getPersonalizedInsights() {
     try {
       await delay(800)
@@ -827,11 +931,10 @@ async getAll() {
       const sleepInsight = PatternAnalyzer.analyzeSleepPatterns(biometricData)
       if (sleepInsight) insights.push(sleepInsight)
       
-      return insights.sort((a, b) => b.impact - a.impact)
+return insights.sort((a, b) => (b.confidence || 0) - (a.confidence || 0))
     } catch (error) {
       console.error('Error generating weekly insights:', error)
       return []
-return []
     }
   },
 
@@ -839,7 +942,7 @@ return []
     await delay(200)
     const insights = await this.getWeeklyInsights()
     return insights.find(insight => insight.Id === parseInt(id))
-
+  },
   async create(data) {
     await delay(350)
     // Insights are generated, not created manually
