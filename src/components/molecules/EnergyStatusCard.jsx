@@ -4,8 +4,7 @@ import ApperIcon from "@/components/ApperIcon";
 import Card from "@/components/atoms/Card";
 
 const EnergyStatusCard = ({ energyData, recommendation, energyBreakdown }) => {
-  const { energyLevel, energyScore } = energyData
-  
+  const { energyLevel, energyScore } = energyData;
   const getEnergyColor = (level) => {
     switch (level) {
       case 'high':
@@ -41,9 +40,9 @@ const EnergyStatusCard = ({ energyData, recommendation, energyBreakdown }) => {
       case 'rest':
         return 'Moon'
       default:
-        return 'Sparkles'
+return 'Sparkles'
     }
-}
+  }
 
   const getFactorIcon = (factor) => {
     switch (factor) {
@@ -155,9 +154,9 @@ const EnergyStatusCard = ({ energyData, recommendation, energyBreakdown }) => {
             <ApperIcon name={getRecommendationIcon(recommendation.priority)} size={18} className="text-primary" />
             <span className="text-sm font-medium text-primary capitalize">
               Today's Priority: {recommendation.priority}
-            </span>
+</span>
           </div>
-<p className="text-xs text-gray-600 leading-relaxed">
+          <p className="text-xs text-gray-600 leading-relaxed">
             {recommendation.reasoning}
           </p>
         </motion.div>
@@ -241,7 +240,8 @@ const EnergyStatusCard = ({ energyData, recommendation, energyBreakdown }) => {
           </div>
         </motion.div>
       )}
-    </Card>
-}
+</Card>
+  );
+};
 
-export default EnergyStatusCard
+export default EnergyStatusCard;
