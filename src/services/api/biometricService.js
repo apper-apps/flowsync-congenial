@@ -97,6 +97,40 @@ return deleted
       }
     }
     
-    return data
+return data
+  },
+
+  async getWeeklyInsights() {
+    await delay(350)
+    const weeklyData = await this.getWeeklyData()
+    
+    // Calculate weekly averages and trends
+    const avgSleepScore = Math.round(weeklyData.reduce((sum, d) => sum + d.sleepScore, 0) / weeklyData.length)
+    const avgEnergyScore = Math.round(weeklyData.reduce((sum, d) => sum + d.energyScore, 0) / weeklyData.length)
+    const avgHRV = Math.round(weeklyData.reduce((sum, d) => sum + d.hrv, 0) / weeklyData.length)
+    const avgSleepHours = Math.round((weeklyData.reduce((sum, d) => sum + d.sleepHours, 0) / weeklyData.length) * 10) / 10
+    
+    // Calculate trends (compare first half vs second half of week)
+    const firstHalf = weeklyData.slice(0, Math.floor(weeklyData.length / 2))
+    const secondHalf = weeklyData.slice(Math.floor(weeklyData.length / 2))
+    
+    const sleepTrend = (secondHalf.reduce((sum, d) => sum + d.sleepScore, 0) / secondHalf.length) - 
+                      (firstHalf.reduce((sum, d) => sum + d.sleepScore, 0) / firstHalf.length)
+    const energyTrend = (secondHalf.reduce((sum, d) => sum + d.energyScore, 0) / secondHalf.length) - 
+                       (firstHalf.reduce((sum, d) => sum + d.energyScore, 0) / firstHalf.length)
+    
+    return {
+      weeklyData,
+      averages: {
+        sleepScore: avgSleepScore,
+        energyScore: avgEnergyScore,
+        hrv: avgHRV,
+        sleepHours: avgSleepHours
+      },
+      trends: {
+        sleep: sleepTrend,
+        energy: energyTrend
+      }
+    }
   }
 }

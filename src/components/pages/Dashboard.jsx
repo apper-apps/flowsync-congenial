@@ -1,108 +1,113 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { toast } from 'react-toastify'
-import EnergyStatusCard from '@/components/molecules/EnergyStatusCard'
-import BiometricCard from '@/components/molecules/BiometricCard'
-import MoodLogger from '@/components/molecules/MoodLogger'
-import TrendChart from '@/components/molecules/TrendChart'
-import GoalCard from '@/components/molecules/GoalCard'
-import Loading from '@/components/ui/Loading'
-import Error from '@/components/ui/Error'
-import Empty from '@/components/ui/Empty'
-import { biometricService } from '@/services/api/biometricService'
-import { goalService } from '@/services/api/goalService'
-import { moodService } from '@/services/api/moodService'
-import { recommendationService } from '@/services/api/recommendationService'
-
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { insightService } from "@/services/api/insightService";
+import InsightCard from "@/components/molecules/InsightCard";
+import BiometricCard from "@/components/molecules/BiometricCard";
+import GoalCard from "@/components/molecules/GoalCard";
+import MoodLogger from "@/components/molecules/MoodLogger";
+import TrendChart from "@/components/molecules/TrendChart";
+import EnergyStatusCard from "@/components/molecules/EnergyStatusCard";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Loading from "@/components/ui/Loading";
+import Goals from "@/components/pages/Goals";
+import Insights from "@/components/pages/Insights";
+import { moodService } from "@/services/api/moodService";
+import { biometricService } from "@/services/api/biometricService";
+import { goalService } from "@/services/api/goalService";
+import { recommendationService } from "@/services/api/recommendationService";
 const Dashboard = () => {
-  const [biometricData, setBiometricData] = useState(null)
-  const [goals, setGoals] = useState([])
-  const [moodTrends, setMoodTrends] = useState([])
-  const [recommendation, setRecommendation] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-
+  const [biometricData, setBiometricData] = useState(null);
+  const [goals, setGoals] = useState([]);
+  const [moodTrends, setMoodTrends] = useState([]);
+  const [recommendation, setRecommendation] = useState(null);
+  const [insights, setInsights] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  
   useEffect(() => {
-    loadDashboardData()
-  }, [])
+    loadDashboardData();
+  }, []);
 
-  const loadDashboardData = async () => {
+const loadDashboardData = async () => {
     try {
-      setLoading(true)
-      setError('')
+      setLoading(true);
+      setError('');
 
-      const [biometrics, goalsData, moodData, recommendationData] = await Promise.all([
+      const [biometrics, goalsData, moodData, recommendationData, insightsData] = await Promise.all([
         biometricService.getTodayData(),
         goalService.getAll(),
         moodService.getRecentTrends(),
-        recommendationService.getTodayRecommendation()
-      ])
-
-      setBiometricData(biometrics)
-      setGoals(goalsData.slice(0, 3)) // Show top 3 goals
-      setMoodTrends(moodData)
-      setRecommendation(recommendationData)
+        recommendationService.getTodayRecommendation(),
+        insightService.getWeeklyInsights()
+      ]);
+      
+      setBiometricData(biometrics);
+setGoals(goalsData.slice(0, 3)); // Show top 3 goals
+      setMoodTrends(moodData);
+      setRecommendation(recommendationData);
+      setInsights(insightsData.slice(0, 2)); // Show top 2 insights
     } catch (err) {
-      setError('Failed to load dashboard data')
-      console.error('Dashboard error:', err)
+      setError('Failed to load dashboard data');
+      console.error('Dashboard error:', err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const handleMoodLogged = async (moodData) => {
+const handleMoodLogged = async (moodData) => {
     try {
-      await moodService.create(moodData)
+      await moodService.create(moodData);
       // Refresh mood trends
-      const updatedTrends = await moodService.getRecentTrends()
-      setMoodTrends(updatedTrends)
+      const updatedTrends = await moodService.getRecentTrends();
+      setMoodTrends(updatedTrends);
     } catch (err) {
-      console.error('Failed to save mood:', err)
+      console.error('Failed to save mood:', err);
     }
-  }
+  };
 
-  const handleTaskComplete = async (taskId) => {
+const handleTaskComplete = async (taskId) => {
     try {
       // Find the goal containing this task
       const goalWithTask = goals.find(goal => 
         goal.tasks?.some(task => task.id === taskId)
-      )
+      );
       
       if (goalWithTask) {
         // Update task completion status
         const updatedTasks = goalWithTask.tasks.map(task =>
           task.id === taskId ? { ...task, completed: !task.completed } : task
-        )
+);
         
         // Calculate new progress
-        const completedTasks = updatedTasks.filter(task => task.completed).length
-        const newProgress = Math.round((completedTasks / updatedTasks.length) * 100)
+        const completedTasks = updatedTasks.filter(task => task.completed).length;
+        const newProgress = Math.round((completedTasks / updatedTasks.length) * 100);
         
         const updatedGoal = {
           ...goalWithTask,
           tasks: updatedTasks,
           progress: newProgress
-        }
-        
-        await goalService.update(goalWithTask.Id, updatedGoal)
+        };
+await goalService.update(goalWithTask.Id, updatedGoal);
         
         // Update local state
         setGoals(goals.map(goal => 
           goal.Id === goalWithTask.Id ? updatedGoal : goal
-        ))
+        ));
         
-        toast.success('Task updated successfully!')
+        toast.success('Task updated successfully!');
       }
     } catch (err) {
-      toast.error('Failed to update task')
-      console.error('Task update error:', err)
+      toast.error('Failed to update task');
+      console.error('Task update error:', err);
     }
-  }
+  };
 
-  const handleGoalEdit = (goal) => {
+const handleGoalEdit = (goal) => {
     // Navigate to goals page or open modal
-    toast.info('Goal editing coming soon!')
-  }
+    toast.info('Goal editing coming soon!');
+  };
 
   if (loading) {
     return <Loading type="dashboard" />
@@ -225,9 +230,43 @@ const Dashboard = () => {
               title="No mood data yet"
               message="Start logging your mood to see trends and patterns."
             />
-          )}
+)}
         </motion.div>
       </div>
+
+      {/* Weekly Insights */}
+      {insights.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-display font-bold text-gray-900">
+              Weekly Insights
+            </h2>
+            <a
+              href="/insights"
+              className="text-sm text-primary hover:text-primary/80 font-medium"
+            >
+              View All Insights
+            </a>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {insights.map((insight, index) => (
+              <motion.div
+                key={insight.Id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 + index * 0.1 }}
+              >
+                <InsightCard insight={insight} />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {/* Active Goals */}
       <motion.div
@@ -264,15 +303,22 @@ const Dashboard = () => {
               </motion.div>
             ))}
           </div>
-        ) : (
-          <Empty 
-            type="goals"
-            onAction={() => window.location.href = '/goals'}
-          />
+) : (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+          >
+            <Empty 
+              type="goals"
+              title="No active goals"
+              message="Create your first goal to start tracking your progress."
+            />
+          </motion.div>
         )}
       </motion.div>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;
