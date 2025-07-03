@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { toast } from 'react-toastify'
-import ApperIcon from '@/components/ApperIcon'
-import Card from '@/components/atoms/Card'
-import Button from '@/components/atoms/Button'
-import Input from '@/components/atoms/Input'
-import GoalCard from '@/components/molecules/GoalCard'
-import Loading from '@/components/ui/Loading'
-import Error from '@/components/ui/Error'
-import Empty from '@/components/ui/Empty'
-import { goalService } from '@/services/api/goalService'
-import { goalTemplateService } from '@/services/api/goalTemplateService'
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Card from "@/components/atoms/Card";
+import Input from "@/components/atoms/Input";
+import Button from "@/components/atoms/Button";
+import GoalCard from "@/components/molecules/GoalCard";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Loading from "@/components/ui/Loading";
+import { goalTemplateService } from "@/services/api/goalTemplateService";
+import { goalService } from "@/services/api/goalService";
 
 const Goals = () => {
   const [goals, setGoals] = useState([])
@@ -255,7 +255,7 @@ useEffect(() => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <GoalCard
+<GoalCard
                 goal={goal}
                 onComplete={(taskId) => handleTaskComplete(goal.Id, taskId)}
                 onEdit={handleGoalEdit}

@@ -1,8 +1,16 @@
-import { motion } from 'framer-motion'
-import ApperIcon from '@/components/ApperIcon'
-import Card from '@/components/atoms/Card'
+import { motion } from "framer-motion";
+import React from "react";
+import ApperIcon from "@/components/ApperIcon";
+import Card from "@/components/atoms/Card";
 
-const GoalCard = ({ goal, onComplete, onEdit }) => {
+const GoalCard = ({ goal, onComplete, onEdit, moodSuggestions }) => {
+  const handleApplyAdjustment = (adjustment) => {
+    // Apply mood-based adjustment logic
+    console.log('Applying adjustment:', adjustment);
+    // This would typically call a parent function or dispatch an action
+    // For now, we'll just log the adjustment
+  };
+
   const getCategoryColor = (category) => {
     const colors = {
       health: 'from-accent to-emerald-600',
@@ -90,6 +98,46 @@ const GoalCard = ({ goal, onComplete, onEdit }) => {
                 {task.title}
               </span>
             </motion.div>
+          ))}
+</div>
+      )}
+
+      {/* Mood-Guided Suggestions */}
+      {moodSuggestions?.adjustments?.length > 0 && (
+        <div className="mt-4 space-y-2">
+          <div className="flex items-center justify-between">
+            <h6 className="text-xs font-medium text-gray-600">Suggested Adjustments</h6>
+            <ApperIcon name="Brain" size={14} className="text-blue-500" />
+          </div>
+          
+          {moodSuggestions.message && (
+            <p className="text-xs text-gray-600 mb-2 italic">
+              {moodSuggestions.message}
+            </p>
+          )}
+          
+          {moodSuggestions.adjustments.slice(0, 2).map((adjustment, index) => (
+            <motion.button
+              key={index}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              onClick={() => handleApplyAdjustment(adjustment)}
+              className="w-full text-left p-2 rounded-lg bg-blue-50 border border-blue-200 hover:bg-blue-100 transition-colors"
+            >
+              <div className="flex items-center space-x-2">
+                <ApperIcon 
+                  name={
+                    adjustment.type === 'mindfulness' ? 'Heart' :
+                    adjustment.type === 'task-reduction' ? 'Minus' :
+                    adjustment.type === 'timeline' ? 'Calendar' : 'Settings'
+                  } 
+                  size={12} 
+                  className="text-blue-600" 
+                />
+                <span className="text-xs text-blue-800">{adjustment.description}</span>
+              </div>
+            </motion.button>
           ))}
         </div>
       )}
