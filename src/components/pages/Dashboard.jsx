@@ -21,7 +21,8 @@ const Dashboard = () => {
   const [biometricData, setBiometricData] = useState(null);
   const [goals, setGoals] = useState([]);
   const [moodTrends, setMoodTrends] = useState([]);
-  const [recommendation, setRecommendation] = useState(null);
+const [recommendation, setRecommendation] = useState(null);
+  const [energyBreakdown, setEnergyBreakdown] = useState(null);
   const [insights, setInsights] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -35,18 +36,20 @@ const loadDashboardData = async () => {
       setLoading(true);
       setError('');
 
-      const [biometrics, goalsData, moodData, recommendationData, insightsData] = await Promise.all([
+const [biometrics, goalsData, moodData, recommendationData, insightsData, breakdownData] = await Promise.all([
         biometricService.getTodayData(),
         goalService.getAll(),
         moodService.getRecentTrends(),
         recommendationService.getTodayRecommendation(),
-        insightService.getWeeklyInsights()
+        insightService.getWeeklyInsights(),
+        biometricService.getEnergyBreakdown()
       ]);
       
-      setBiometricData(biometrics);
-setGoals(goalsData.slice(0, 3)); // Show top 3 goals
+setBiometricData(biometrics);
+      setGoals(goalsData.slice(0, 3)); // Show top 3 goals
       setMoodTrends(moodData);
       setRecommendation(recommendationData);
+      setEnergyBreakdown(breakdownData);
       setInsights(insightsData.slice(0, 2)); // Show top 2 insights
     } catch (err) {
       setError('Failed to load dashboard data');
@@ -146,10 +149,11 @@ const handleGoalEdit = (goal) => {
         transition={{ delay: 0.1 }}
         className="max-w-md mx-auto"
       >
-        {biometricData && (
+{biometricData && (
           <EnergyStatusCard 
             energyData={biometricData} 
             recommendation={recommendation}
+            energyBreakdown={energyBreakdown}
           />
         )}
       </motion.div>

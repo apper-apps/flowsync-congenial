@@ -8,13 +8,26 @@ export const moodService = {
     return [...mockMoodData].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
   },
 
-  async getRecentTrends() {
+async getRecentTrends() {
     await delay(300)
     const recent = mockMoodData.slice(-7)
-    return recent.map(entry => ({
+    const trendData = recent.map(entry => ({
       date: new Date(entry.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
       value: entry.moodScore
     }))
+    
+    // Calculate additional metrics for energy correlation
+    const averageScore = recent.reduce((sum, entry) => sum + entry.moodScore, 0) / recent.length
+    const trend = recent.length > 1 ? recent[recent.length - 1].moodScore - recent[0].moodScore : 0
+    
+    // Return enhanced data structure
+    return {
+      ...trendData,
+      data: trendData,
+      averageScore: Math.round(averageScore * 10) / 10,
+      trend: Math.round(trend * 10) / 10,
+      totalEntries: recent.length
+    }
   },
 
   async getById(id) {

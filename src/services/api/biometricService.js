@@ -130,6 +130,73 @@ return data
       trends: {
         sleep: sleepTrend,
         energy: energyTrend
+}
+    }
+  },
+
+  async getEnergyBreakdown() {
+    await delay(350)
+    
+    try {
+      // Get today's biometric data
+      const todayData = await this.getTodayData()
+      
+      // Import and get recent mood data for correlation
+      const { moodService } = await import('./moodService.js')
+      const recentMoodData = await moodService.getRecentTrends()
+      
+      // Calculate individual factor contributions
+      const sleepContribution = Math.round((todayData.sleepScore / 100) * 40) // Sleep accounts for 40% max
+      const hrvContribution = Math.round(((todayData.hrv - 30) / 30) * 30) // HRV accounts for 30% max (30-60ms range)
+      const moodContribution = Math.round((recentMoodData.averageScore / 5) * 30) // Recent mood accounts for 30% max
+      
+      // Calculate impact scores (how much each factor helps/hurts energy)
+      const sleepImpact = Math.round((todayData.sleepScore - 75) / 3) // Impact relative to good sleep (75)
+      const hrvImpact = Math.round((todayData.hrv - 42) / 2) // Impact relative to average HRV (42)
+      const moodImpact = Math.round((recentMoodData.averageScore - 3.5) * 6) // Impact relative to neutral mood (3.5)
+      
+      return {
+        sleep: {
+          score: todayData.sleepScore,
+          contribution: Math.max(0, sleepContribution),
+          impact: sleepImpact
+        },
+        hrv: {
+          score: todayData.hrv,
+          contribution: Math.max(0, hrvContribution),
+          impact: hrvImpact
+        },
+        mood: {
+          score: Math.round(recentMoodData.averageScore * 10) / 10,
+          contribution: Math.max(0, moodContribution),
+          impact: moodImpact
+        },
+        totalFactors: 3,
+        correlationStrength: 0.85 // How well factors predict energy
+      }
+    } catch (error) {
+      console.error('Error calculating energy breakdown:', error)
+      
+      // Return fallback breakdown based on today's data only
+      const todayData = await this.getTodayData()
+      return {
+        sleep: {
+          score: todayData.sleepScore,
+          contribution: Math.round((todayData.sleepScore / 100) * 40),
+          impact: Math.round((todayData.sleepScore - 75) / 3)
+        },
+        hrv: {
+          score: todayData.hrv,
+          contribution: Math.round(((todayData.hrv - 30) / 30) * 30),
+          impact: Math.round((todayData.hrv - 42) / 2)
+        },
+        mood: {
+          score: 3.5,
+          contribution: 21,
+          impact: 0
+        },
+        totalFactors: 3,
+        correlationStrength: 0.70
       }
     }
   }

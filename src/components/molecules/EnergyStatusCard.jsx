@@ -1,8 +1,9 @@
-import { motion } from 'framer-motion'
-import ApperIcon from '@/components/ApperIcon'
-import Card from '@/components/atoms/Card'
+import { motion } from "framer-motion";
+import React from "react";
+import ApperIcon from "@/components/ApperIcon";
+import Card from "@/components/atoms/Card";
 
-const EnergyStatusCard = ({ energyData, recommendation }) => {
+const EnergyStatusCard = ({ energyData, recommendation, energyBreakdown }) => {
   const { energyLevel, energyScore } = energyData
   
   const getEnergyColor = (level) => {
@@ -42,8 +43,27 @@ const EnergyStatusCard = ({ energyData, recommendation }) => {
       default:
         return 'Sparkles'
     }
+}
+
+  const getFactorIcon = (factor) => {
+    switch (factor) {
+      case 'sleep':
+        return 'Moon'
+      case 'hrv':
+        return 'Heart'
+      case 'mood':
+        return 'Smile'
+      default:
+        return 'Activity'
+    }
   }
 
+  const getFactorColor = (impact) => {
+    if (impact > 5) return 'from-accent to-emerald-600'
+    if (impact > 0) return 'from-primary to-blue-600'
+    if (impact > -5) return 'from-warning to-orange-600'
+    return 'from-error to-red-600'
+  }
   return (
     <Card className="text-center bg-gradient-to-br from-white to-gray-50 border border-gray-100">
       <div className="flex items-center justify-between mb-6">
@@ -137,13 +157,91 @@ const EnergyStatusCard = ({ energyData, recommendation }) => {
               Today's Priority: {recommendation.priority}
             </span>
           </div>
-          <p className="text-xs text-gray-600 leading-relaxed">
+<p className="text-xs text-gray-600 leading-relaxed">
             {recommendation.reasoning}
           </p>
         </motion.div>
       )}
+
+      {/* Energy Factor Breakdown */}
+      {energyBreakdown && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1 }}
+          className="mt-6 pt-6 border-t border-gray-200"
+        >
+          <h4 className="text-sm font-medium text-gray-700 mb-4 text-center">
+            Contributing Factors
+          </h4>
+          
+          <div className="space-y-3">
+            {/* Sleep Quality Factor */}
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className={`w-8 h-8 bg-gradient-to-br ${getFactorColor(energyBreakdown.sleep.impact)} rounded-full flex items-center justify-center`}>
+                  <ApperIcon name={getFactorIcon('sleep')} size={14} className="text-white" />
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-gray-900">Sleep Quality</div>
+                  <div className="text-xs text-gray-600">{energyBreakdown.sleep.score}/100</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-sm font-medium text-gray-900">{energyBreakdown.sleep.contribution}%</div>
+                <div className="text-xs text-gray-600">
+                  {energyBreakdown.sleep.impact > 0 ? '+' : ''}{energyBreakdown.sleep.impact}
+                </div>
+              </div>
+            </div>
+
+            {/* HRV Factor */}
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className={`w-8 h-8 bg-gradient-to-br ${getFactorColor(energyBreakdown.hrv.impact)} rounded-full flex items-center justify-center`}>
+                  <ApperIcon name={getFactorIcon('hrv')} size={14} className="text-white" />
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-gray-900">Heart Rate Variability</div>
+                  <div className="text-xs text-gray-600">{energyBreakdown.hrv.score}ms</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-sm font-medium text-gray-900">{energyBreakdown.hrv.contribution}%</div>
+                <div className="text-xs text-gray-600">
+                  {energyBreakdown.hrv.impact > 0 ? '+' : ''}{energyBreakdown.hrv.impact}
+                </div>
+              </div>
+            </div>
+
+            {/* Recent Mood Factor */}
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className={`w-8 h-8 bg-gradient-to-br ${getFactorColor(energyBreakdown.mood.impact)} rounded-full flex items-center justify-center`}>
+                  <ApperIcon name={getFactorIcon('mood')} size={14} className="text-white" />
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-gray-900">Recent Mood</div>
+                  <div className="text-xs text-gray-600">{energyBreakdown.mood.score}/5 avg</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-sm font-medium text-gray-900">{energyBreakdown.mood.contribution}%</div>
+                <div className="text-xs text-gray-600">
+                  {energyBreakdown.mood.impact > 0 ? '+' : ''}{energyBreakdown.mood.impact}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 text-center">
+            <div className="text-xs text-gray-500">
+              Based on recent patterns and correlations
+            </div>
+          </div>
+        </motion.div>
+      )}
     </Card>
-  )
 }
 
 export default EnergyStatusCard
