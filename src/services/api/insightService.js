@@ -626,15 +626,14 @@ export const insightService = {
     ]
   },
 
-  generateAdvancedRecommendations(patterns) {
+generateAdvancedRecommendations(patterns) {
     return [
       'Schedule your most challenging tasks during identified optimal windows',
       'Use predictive mood patterns to plan important meetings and decisions',
       'Implement stress recovery techniques during identified high-stress periods'
     ]
-]
-  }
-}
+  },
+
   generateInsights(weeklyData, averages, trends, goals) {
     const insights = []
     const weekStart = startOfWeek(new Date())

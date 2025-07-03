@@ -1,5 +1,3 @@
-import React from "react";
-import Error from "@/components/ui/Error";
 import mockMoodData from "@/services/mockData/moodData.json";
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
@@ -28,11 +26,59 @@ async getRecentTrends(days = 7) {
       ...item,
       timestamp: new Date(Date.now() - Math.random() * days * 24 * 60 * 60 * 1000).toISOString()
     }))
-  },
+},
 
   async analyzeBurnoutRisk() {
     await delay(250)
     const recent = mockMoodData.slice(-7)
+    
+    if (recent.length < 3) return { risk: 'insufficient-data', level: 0 }
+    
+    const averageScore = recent.reduce((sum, entry) => sum + entry.moodScore, 0) / recent.length
+    const recentScore = recent.slice(-3).reduce((sum, entry) => sum + entry.moodScore, 0) / 3
+    const decline = averageScore - recentScore
+    
+    let riskLevel = 0
+    let riskCategory = 'low'
+    let recommendations = []
+    
+    if (averageScore < 3 || decline > 1.5) {
+      riskLevel = 3
+      riskCategory = 'high'
+      recommendations = [
+        'Reduce daily task load by 50%',
+        'Take mindfulness breaks every 2 hours',
+        'Extend milestone dates by 1-2 weeks',
+        'Focus on one priority goal only'
+      ]
+    } else if (averageScore < 4 || decline > 1) {
+      riskLevel = 2
+      riskCategory = 'moderate'
+      recommendations = [
+        'Reduce daily task load by 25%',
+        'Add 15-minute mindfulness sessions',
+        'Extend milestone dates by 3-5 days',
+        'Simplify complex tasks'
+      ]
+    } else if (averageScore < 5 || decline > 0.5) {
+      riskLevel = 1
+      riskCategory = 'mild'
+      recommendations = [
+        'Take regular breaks between tasks',
+        'Practice 5-minute breathing exercises',
+        'Consider lighter alternatives for difficult tasks'
+      ]
+    }
+    
+    return {
+      risk: riskCategory,
+      level: riskLevel,
+      averageScore: Math.round(averageScore * 10) / 10,
+      recentScore: Math.round(recentScore * 10) / 10,
+      decline: Math.round(decline * 10) / 10,
+      recommendations
+    }
+  },
 
   async getMoodTrend(days = 7) {
     try {
@@ -78,52 +124,6 @@ async getRecentTrends(days = 7) {
         trend: 0,
         totalEntries: 0
       }
-    }
-if (recent.length < 3) return { risk: 'insufficient-data', level: 0 }
-    
-    const averageScore = recent.reduce((sum, entry) => sum + entry.moodScore, 0) / recent.length
-    const recentScore = recent.slice(-3).reduce((sum, entry) => sum + entry.moodScore, 0) / 3
-    const decline = averageScore - recentScore
-    
-    let riskLevel = 0
-    let riskCategory = 'low'
-    let recommendations = []
-    
-    if (averageScore < 3 || decline > 1.5) {
-      riskLevel = 3
-      riskCategory = 'high'
-      recommendations = [
-        'Reduce daily task load by 50%',
-        'Take mindfulness breaks every 2 hours',
-        'Extend milestone dates by 1-2 weeks',
-        'Focus on one priority goal only'
-      ]
-    } else if (averageScore < 4 || decline > 1) {
-      riskLevel = 2
-      riskCategory = 'moderate'
-      recommendations = [
-        'Reduce daily task load by 25%',
-        'Add 15-minute mindfulness sessions',
-        'Extend milestone dates by 3-5 days',
-        'Simplify complex tasks'
-      ]
-    } else if (averageScore < 5 || decline > 0.5) {
-      riskLevel = 1
-      riskCategory = 'mild'
-      recommendations = [
-        'Take regular breaks between tasks',
-        'Practice 5-minute breathing exercises',
-        'Consider lighter alternatives for difficult tasks'
-      ]
-    }
-    
-    return {
-      risk: riskCategory,
-      level: riskLevel,
-      averageScore: Math.round(averageScore * 10) / 10,
-      recentScore: Math.round(recentScore * 10) / 10,
-      decline: Math.round(decline * 10) / 10,
-      recommendations
     }
   },
 
