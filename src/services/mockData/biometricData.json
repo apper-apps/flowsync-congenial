@@ -1,0 +1,72 @@
+[
+  {
+    "Id": 1,
+    "date": "2024-01-15",
+    "sleepScore": 85,
+    "sleepHours": 8.2,
+    "hrv": 45,
+    "restingHR": 62,
+    "energyLevel": "high",
+    "energyScore": 88
+  },
+  {
+    "Id": 2,
+    "date": "2024-01-16",
+    "sleepScore": 72,
+    "sleepHours": 7.1,
+    "hrv": 38,
+    "restingHR": 67,
+    "energyLevel": "medium",
+    "energyScore": 71
+  },
+  {
+    "Id": 3,
+    "date": "2024-01-17",
+    "sleepScore": 91,
+    "sleepHours": 8.8,
+    "hrv": 52,
+    "restingHR": 59,
+    "energyLevel": "high",
+    "energyScore": 92
+  },
+  {
+    "Id": 4,
+    "date": "2024-01-18",
+    "sleepScore": 64,
+    "sleepHours": 6.3,
+    "hrv": 31,
+    "restingHR": 72,
+    "energyLevel": "low",
+    "energyScore": 58
+  },
+  {
+    "Id": 5,
+    "date": "2024-01-19",
+    "sleepScore": 78,
+    "sleepHours": 7.5,
+    "hrv": 42,
+    "restingHR": 65,
+    "energyLevel": "medium",
+    "energyScore": 75
+  },
+  {
+    "Id": 6,
+    "date": "2024-01-20",
+    "sleepScore": 82,
+    "sleepHours": 8.0,
+    "hrv": 47,
+    "restingHR": 63,
+    "energyLevel": "high",
+    "energyScore": 81
+  },
+  {
+    "Id": 7,
+    "date": "2024-01-21",
+    "sleepScore": 69,
+    "sleepHours": 6.8,
+    "hrv": 35,
+    "restingHR": 68,
+    "energyLevel": "medium",
+    "energyScore": 66
+  }
+]

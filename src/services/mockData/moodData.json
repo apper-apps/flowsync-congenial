@@ -1,0 +1,114 @@
+[
+  {
+    "Id": 1,
+    "timestamp": "2024-01-15T08:30:00Z",
+    "mood": "Great",
+    "moodScore": 5,
+    "note": "Feeling energized after a good night's sleep!",
+    "energyLevel": "high"
+  },
+  {
+    "Id": 2,
+    "timestamp": "2024-01-15T20:15:00Z",
+    "mood": "Good",
+    "moodScore": 4,
+    "note": "Productive day at work",
+    "energyLevel": "medium"
+  },
+  {
+    "Id": 3,
+    "timestamp": "2024-01-16T09:00:00Z",
+    "mood": "Okay",
+    "moodScore": 3,
+    "note": "Feeling neutral today",
+    "energyLevel": "medium"
+  },
+  {
+    "Id": 4,
+    "timestamp": "2024-01-16T18:45:00Z",
+    "mood": "Good",
+    "moodScore": 4,
+    "note": "Workout helped boost my mood",
+    "energyLevel": "high"
+  },
+  {
+    "Id": 5,
+    "timestamp": "2024-01-17T07:15:00Z",
+    "mood": "Great",
+    "moodScore": 5,
+    "note": "Amazing start to the day!",
+    "energyLevel": "high"
+  },
+  {
+    "Id": 6,
+    "timestamp": "2024-01-17T19:30:00Z",
+    "mood": "Good",
+    "moodScore": 4,
+    "note": "Accomplished my goals today",
+    "energyLevel": "medium"
+  },
+  {
+    "Id": 7,
+    "timestamp": "2024-01-18T10:20:00Z",
+    "mood": "Low",
+    "moodScore": 2,
+    "note": "Didn't sleep well last night",
+    "energyLevel": "low"
+  },
+  {
+    "Id": 8,
+    "timestamp": "2024-01-18T16:00:00Z",
+    "mood": "Okay",
+    "moodScore": 3,
+    "note": "Feeling better after lunch",
+    "energyLevel": "medium"
+  },
+  {
+    "Id": 9,
+    "timestamp": "2024-01-19T08:45:00Z",
+    "mood": "Good",
+    "moodScore": 4,
+    "note": "Looking forward to the weekend",
+    "energyLevel": "medium"
+  },
+  {
+    "Id": 10,
+    "timestamp": "2024-01-19T21:10:00Z",
+    "mood": "Great",
+    "moodScore": 5,
+    "note": "Had an amazing dinner with friends",
+    "energyLevel": "high"
+  },
+  {
+    "Id": 11,
+    "timestamp": "2024-01-20T09:30:00Z",
+    "mood": "Great",
+    "moodScore": 5,
+    "note": "Weekend vibes are strong!",
+    "energyLevel": "high"
+  },
+  {
+    "Id": 12,
+    "timestamp": "2024-01-20T17:25:00Z",
+    "mood": "Good",
+    "moodScore": 4,
+    "note": "Relaxing Saturday afternoon",
+    "energyLevel": "medium"
+  },
+  {
+    "Id": 13,
+    "timestamp": "2024-01-21T11:00:00Z",
+    "mood": "Okay",
+    "moodScore": 3,
+    "note": "Sunday laziness kicking in",
+    "energyLevel": "low"
+  },
+  {
+    "Id": 14,
+    "timestamp": "2024-01-21T19:40:00Z",
+    "mood": "Good",
+    "moodScore": 4,
+    "note": "Prepared for the week ahead",
+    "energyLevel": "medium"
+  }
+]

@@ -1,0 +1,86 @@
+[
+  {
+    "Id": 1,
+    "date": "2024-01-15",
+    "priority": "focus",
+    "reasoning": "Your sleep quality was excellent and HRV is high. Perfect time for focused work and challenging tasks.",
+    "suggestedTasks": [
+      "Complete important project deadline",
+      "Review quarterly goals and metrics",
+      "Plan next week's priorities"
+    ],
+    "energyScore": 88
+  },
+  {
+    "Id": 2,
+    "date": "2024-01-16",
+    "priority": "workout",
+    "reasoning": "Moderate energy levels with good recovery metrics. Ideal for physical activity and movement.",
+    "suggestedTasks": [
+      "Go for a 30-minute run",
+      "Complete strength training routine",
+      "Take a walk during lunch break"
+    ],
+    "energyScore": 71
+  },
+  {
+    "Id": 3,
+    "date": "2024-01-17",
+    "priority": "focus",
+    "reasoning": "Outstanding sleep metrics and maximum energy. Tackle your most challenging goals today.",
+    "suggestedTasks": [
+      "Work on complex problem solving",
+      "Make important decisions",
+      "Lead team meetings"
+    ],
+    "energyScore": 92
+  },
+  {
+    "Id": 4,
+    "date": "2024-01-18",
+    "priority": "rest",
+    "reasoning": "Low energy and poor sleep quality detected. Focus on recovery and light activities.",
+    "suggestedTasks": [
+      "Take gentle yoga or stretching",
+      "Practice meditation or mindfulness",
+      "Early bedtime preparation"
+    ],
+    "energyScore": 58
+  },
+  {
+    "Id": 5,
+    "date": "2024-01-19",
+    "priority": "focus",
+    "reasoning": "Good recovery with stable metrics. Great day for productive work and goal achievement.",
+    "suggestedTasks": [
+      "Complete priority tasks",
+      "Review and organize projects",
+      "Plan weekend activities"
+    ],
+    "energyScore": 75
+  },
+  {
+    "Id": 6,
+    "date": "2024-01-20",
+    "priority": "workout",
+    "reasoning": "High energy with good sleep quality. Perfect for physical challenges and outdoor activities.",
+    "suggestedTasks": [
+      "Long workout session",
+      "Try new physical activity",
+      "Outdoor adventure or hiking"
+    ],
+    "energyScore": 81
+  },
+  {
+    "Id": 7,
+    "date": "2024-01-21",
+    "priority": "rest",
+    "reasoning": "Weekend relaxation needed. Moderate energy suggests focusing on recovery and light activities.",
+    "suggestedTasks": [
+      "Light stretching or yoga",
+      "Meal prep for the week",
+      "Planning and reflection time"
+    ],
+    "energyScore": 66
+  }
+]
