@@ -6,7 +6,7 @@ import { biometricService } from "@/services/api/biometricService";
 import { goalService } from "@/services/api/goalService";
 
 function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 const PatternAnalyzer = {
@@ -831,15 +831,14 @@ async getAll() {
     } catch (error) {
       console.error('Error generating weekly insights:', error)
       return []
+return []
     }
-  }
   },
 
   async getById(id) {
     await delay(200)
     const insights = await this.getWeeklyInsights()
     return insights.find(insight => insight.Id === parseInt(id))
-  },
 
   async create(data) {
     await delay(350)
