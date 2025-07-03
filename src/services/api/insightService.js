@@ -792,9 +792,47 @@ getGoalCorrelation(goals, pattern) {
     return correlations[pattern] || `This pattern may impact your ${goals.length} active goal(s).`
   },
 
-  async getAll() {
+async getAll() {
     await delay(300)
     return this.getWeeklyInsights()
+  },
+
+  async getWeeklyInsights() {
+    await delay(500)
+    const startDate = startOfWeek(new Date(), { weekStartsOn: 1 })
+    const endDate = endOfWeek(new Date(), { weekStartsOn: 1 })
+    
+    try {
+      const [moodData, biometricData, goalData] = await Promise.all([
+        moodService.getDateRange(startDate, endDate),
+        biometricService.getDateRange(startDate, endDate),
+        goalService.getAll()
+      ])
+      
+      const insights = []
+      
+      // Mood pattern analysis
+      const moodInsight = PatternAnalyzer.analyzeMoodPatterns(moodData)
+      if (moodInsight) insights.push(moodInsight)
+      
+      // Energy trend analysis
+      const energyInsight = PatternAnalyzer.analyzeEnergyTrends(biometricData)
+      if (energyInsight) insights.push(energyInsight)
+      
+      // Goal progress analysis
+      const goalInsight = PatternAnalyzer.analyzeGoalProgress(goalData)
+      if (goalInsight) insights.push(goalInsight)
+      
+      // Sleep pattern analysis
+      const sleepInsight = PatternAnalyzer.analyzeSleepPatterns(biometricData)
+      if (sleepInsight) insights.push(sleepInsight)
+      
+      return insights.sort((a, b) => b.impact - a.impact)
+    } catch (error) {
+      console.error('Error generating weekly insights:', error)
+      return []
+    }
+  }
   },
 
   async getById(id) {
