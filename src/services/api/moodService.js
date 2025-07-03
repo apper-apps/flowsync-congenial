@@ -1,4 +1,6 @@
-import mockMoodData from '@/services/mockData/moodData.json'
+import React from "react";
+import Error from "@/components/ui/Error";
+import mockMoodData from "@/services/mockData/moodData.json";
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -8,32 +10,76 @@ export const moodService = {
     return [...mockMoodData].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
   },
 
-async getRecentTrends() {
+async getRecentTrends(days = 7) {
     await delay(300)
-    const recent = mockMoodData.slice(-7)
+    const recent = mockMoodData.slice(-days)
     const trendData = recent.map(entry => ({
       date: new Date(entry.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
       value: entry.moodScore
     }))
     
-    // Calculate additional metrics for energy correlation
-    const averageScore = recent.reduce((sum, entry) => sum + entry.moodScore, 0) / recent.length
-    const trend = recent.length > 1 ? recent[recent.length - 1].moodScore - recent[0].moodScore : 0
-    
-    // Return enhanced data structure
-    return {
-      ...trendData,
-      data: trendData,
-      averageScore: Math.round(averageScore * 10) / 10,
-      trend: Math.round(trend * 10) / 10,
-      totalEntries: recent.length
-    }
+    return trendData
+  },
+
+  async getMoodData(days = 7) {
+    await delay(200)
+    const moodEntries = Array.isArray(mockMoodData) ? mockMoodData : []
+    return moodEntries.slice(0, days).map(item => ({
+      ...item,
+      timestamp: new Date(Date.now() - Math.random() * days * 24 * 60 * 60 * 1000).toISOString()
+    }))
   },
 
   async analyzeBurnoutRisk() {
     await delay(250)
     const recent = mockMoodData.slice(-7)
-    if (recent.length < 3) return { risk: 'insufficient-data', level: 0 }
+
+  async getMoodTrend(days = 7) {
+    try {
+      await delay(300)
+      const data = await this.getMoodData(days)
+      
+      // Ensure data is an array before processing
+      if (!Array.isArray(data) || data.length === 0) {
+        return {
+          data: [],
+          averageScore: 0,
+          trend: 0,
+          totalEntries: 0
+        }
+      }
+      
+      const recent = data.slice(-days)
+      const scores = recent.map(entry => entry?.score || 0)
+      const averageScore = scores.reduce((sum, score) => sum + score, 0) / scores.length
+      
+      // Calculate trend
+      const trendData = recent.map((entry, index) => ({
+        date: entry.timestamp,
+        score: entry.score,
+        index
+      }))
+      
+      const trend = trendData.length > 1 ? 
+        (trendData[trendData.length - 1].score - trendData[0].score) / trendData.length : 0
+
+      return {
+        ...trendData,
+        data: trendData,
+        averageScore: Math.round(averageScore * 10) / 10,
+        trend: Math.round(trend * 10) / 10,
+        totalEntries: recent.length
+      }
+    } catch (error) {
+      console.error('Error getting mood trend:', error)
+      return {
+        data: [],
+        averageScore: 0,
+        trend: 0,
+        totalEntries: 0
+      }
+    }
+if (recent.length < 3) return { risk: 'insufficient-data', level: 0 }
     
     const averageScore = recent.reduce((sum, entry) => sum + entry.moodScore, 0) / recent.length
     const recentScore = recent.slice(-3).reduce((sum, entry) => sum + entry.moodScore, 0) / 3
