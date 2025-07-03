@@ -10,12 +10,18 @@ import Loading from '@/components/ui/Loading'
 import Error from '@/components/ui/Error'
 import Empty from '@/components/ui/Empty'
 import { goalService } from '@/services/api/goalService'
+import { goalTemplateService } from '@/services/api/goalTemplateService'
 
 const Goals = () => {
   const [goals, setGoals] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [showAddModal, setShowAddModal] = useState(false)
+const [showAddModal, setShowAddModal] = useState(false)
+  const [showTemplateModal, setShowTemplateModal] = useState(false)
+  const [selectedTemplate, setSelectedTemplate] = useState(null)
+  const [templateFilter, setTemplateFilter] = useState('all')
+  const [templates, setTemplates] = useState([])
+  const [templatesLoading, setTemplatesLoading] = useState(false)
   const [newGoal, setNewGoal] = useState({
     title: '',
     category: 'personal',
@@ -29,8 +35,9 @@ const Goals = () => {
     { value: 'personal', label: 'Personal Growth', icon: 'User', color: 'from-purple-500 to-pink-600' }
   ]
 
-  useEffect(() => {
+useEffect(() => {
     loadGoals()
+    loadTemplates()
   }, [])
 
   const loadGoals = async () => {
@@ -45,7 +52,34 @@ const Goals = () => {
     } finally {
       setLoading(false)
     }
+}
+
+  const loadTemplates = async () => {
+    try {
+      setTemplatesLoading(true)
+      const data = await goalTemplateService.getAll()
+      setTemplates(data)
+    } catch (err) {
+      console.error('Templates error:', err)
+    } finally {
+      setTemplatesLoading(false)
+    }
   }
+
+  const handleUseTemplate = (template) => {
+    setNewGoal({
+      title: template.title,
+      category: template.category,
+      targetDate: '',
+      tasks: template.tasks
+    })
+    setShowTemplateModal(false)
+    setShowAddModal(true)
+  }
+
+  const filteredTemplates = templateFilter === 'all' 
+    ? templates 
+    : templates.filter(t => t.category === templateFilter)
 
   const handleAddGoal = async (e) => {
     e.preventDefault()
@@ -145,15 +179,25 @@ const Goals = () => {
           <p className="text-lg text-gray-600">
             Track your goals and adapt tasks to your energy levels
           </p>
+</div>
+        <div className="flex space-x-3">
+          <Button
+            onClick={() => setShowTemplateModal(true)}
+            variant="secondary"
+            className="px-6 py-3"
+          >
+            <ApperIcon name="BookOpen" size={18} className="mr-2" />
+            Browse Templates
+          </Button>
+          <Button
+            onClick={() => setShowAddModal(true)}
+            variant="primary"
+            className="px-6 py-3"
+          >
+            <ApperIcon name="Plus" size={18} className="mr-2" />
+            Add Goal
+          </Button>
         </div>
-        <Button
-          onClick={() => setShowAddModal(true)}
-          variant="primary"
-          className="px-6 py-3"
-        >
-          <ApperIcon name="Plus" size={18} className="mr-2" />
-          Add Goal
-        </Button>
       </div>
 
       {/* Goals Stats */}
@@ -312,6 +356,110 @@ const Goals = () => {
                 </Button>
               </div>
             </form>
+          </motion.div>
+</div>
+      )}
+
+      {/* Template Gallery Modal */}
+      {showTemplateModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden"
+          >
+            <div className="flex items-center justify-between p-6 border-b">
+              <h3 className="text-2xl font-display font-bold text-gray-900">
+                Goal Templates
+              </h3>
+              <button
+                onClick={() => setShowTemplateModal(false)}
+                className="p-2 text-gray-400 hover:text-gray-600"
+              >
+                <ApperIcon name="X" size={24} />
+              </button>
+            </div>
+
+            <div className="p-6">
+              {/* Template Filters */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {['all', 'health', 'work', 'personal'].map((filter) => (
+                  <Button
+                    key={filter}
+                    onClick={() => setTemplateFilter(filter)}
+                    variant={templateFilter === filter ? 'primary' : 'secondary'}
+                    className="px-4 py-2 text-sm"
+                  >
+                    {filter.charAt(0).toUpperCase() + filter.slice(1)}
+                  </Button>
+                ))}
+              </div>
+
+              {/* Templates Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[500px] overflow-y-auto">
+                {templatesLoading ? (
+                  <div className="col-span-full flex items-center justify-center py-12">
+                    <div className="text-gray-500">Loading templates...</div>
+                  </div>
+                ) : filteredTemplates.length === 0 ? (
+                  <div className="col-span-full flex items-center justify-center py-12">
+                    <div className="text-gray-500">No templates found</div>
+                  </div>
+                ) : (
+                  filteredTemplates.map((template) => (
+                    <motion.div
+                      key={template.Id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div className={`w-10 h-10 bg-gradient-to-r ${categories.find(c => c.value === template.category)?.color || 'from-gray-400 to-gray-600'} rounded-lg flex items-center justify-center`}>
+                          <ApperIcon 
+                            name={categories.find(c => c.value === template.category)?.icon || 'Target'} 
+                            size={20} 
+                            className="text-white" 
+                          />
+                        </div>
+                        <Button
+                          onClick={() => handleUseTemplate(template)}
+                          variant="primary"
+                          size="sm"
+                          className="px-3 py-1 text-xs"
+                        >
+                          Use Template
+                        </Button>
+                      </div>
+                      
+                      <h4 className="font-display font-bold text-gray-900 mb-2">
+                        {template.title}
+                      </h4>
+                      
+                      <p className="text-sm text-gray-600 mb-3">
+                        {template.description}
+                      </p>
+                      
+                      <div className="space-y-1">
+                        <div className="text-xs text-gray-500 mb-2">
+                          {template.tasks.length} tasks included
+                        </div>
+                        {template.tasks.slice(0, 3).map((task, index) => (
+                          <div key={index} className="flex items-center text-xs text-gray-600">
+                            <ApperIcon name="Check" size={12} className="mr-2 text-gray-400" />
+                            {task.title}
+                          </div>
+                        ))}
+                        {template.tasks.length > 3 && (
+                          <div className="text-xs text-gray-500 mt-1">
+                            +{template.tasks.length - 3} more tasks
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))
+                )}
+              </div>
+            </div>
           </motion.div>
         </div>
       )}

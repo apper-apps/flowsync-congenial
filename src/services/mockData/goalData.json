@@ -5,22 +5,26 @@
     "category": "health",
     "targetDate": "2024-06-15",
     "progress": 65,
-    "tasks": [
-      { "id": 1, "title": "Run 5 miles today", "completed": true },
-      { "id": 2, "title": "Strength training session", "completed": false },
-      { "id": 3, "title": "Track weekly mileage", "completed": true }
+"tasks": [
+      { "id": 1, "title": "Week 1-4: Base building - 3 runs per week", "completed": true },
+      { "id": 2, "title": "Week 5-8: Increase weekly mileage by 10%", "completed": true },
+      { "id": 3, "title": "Week 9-12: Add tempo runs and intervals", "completed": false },
+      { "id": 4, "title": "Week 13-15: Peak training with long runs", "completed": false },
+      { "id": 5, "title": "Week 16: Taper and race preparation", "completed": false }
     ]
   },
   {
-    "Id": 2,
-    "title": "Launch New Product",
+"Id": 2,
+    "title": "Launch Mobile App",
     "category": "work",
     "targetDate": "2024-03-30",
     "progress": 78,
-    "tasks": [
-      { "id": 4, "title": "Complete user testing", "completed": true },
-      { "id": 5, "title": "Finalize marketing plan", "completed": false },
-      { "id": 6, "title": "Prepare launch presentation", "completed": false }
+"tasks": [
+      { "id": 4, "title": "Define app requirements and user stories", "completed": true },
+      { "id": 5, "title": "Create wireframes and UI mockups", "completed": true },
+      { "id": 6, "title": "Develop MVP with core features", "completed": true },
+      { "id": 7, "title": "Conduct user testing and gather feedback", "completed": false },
+      { "id": 8, "title": "Implement feedback and polish UI", "completed": false }
     ]
   },
   {

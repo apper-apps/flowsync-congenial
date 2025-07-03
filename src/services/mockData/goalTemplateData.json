@@ -1,0 +1,170 @@
+[
+  {
+    "Id": 1,
+    "title": "Complete Marathon Training",
+    "category": "health",
+    "description": "A comprehensive 16-week marathon training program with progressive mileage build-up",
+    "tasks": [
+      { "id": 1, "title": "Week 1-4: Base building - 3 runs per week", "completed": false },
+      { "id": 2, "title": "Week 5-8: Increase weekly mileage by 10%", "completed": false },
+      { "id": 3, "title": "Week 9-12: Add tempo runs and intervals", "completed": false },
+      { "id": 4, "title": "Week 13-15: Peak training with long runs", "completed": false },
+      { "id": 5, "title": "Week 16: Taper and race preparation", "completed": false },
+      { "id": 6, "title": "Complete race day nutrition plan", "completed": false }
+    ]
+  },
+  {
+    "Id": 2,
+    "title": "Launch Mobile App",
+    "category": "work",
+    "description": "Complete product development lifecycle from concept to app store launch",
+    "tasks": [
+      { "id": 7, "title": "Define app requirements and user stories", "completed": false },
+      { "id": 8, "title": "Create wireframes and UI mockups", "completed": false },
+      { "id": 9, "title": "Develop MVP with core features", "completed": false },
+      { "id": 10, "title": "Conduct user testing and gather feedback", "completed": false },
+      { "id": 11, "title": "Implement feedback and polish UI", "completed": false },
+      { "id": 12, "title": "Prepare app store listings and submit", "completed": false }
+    ]
+  },
+  {
+    "Id": 3,
+    "title": "Master a New Language",
+    "category": "personal",
+    "description": "Achieve conversational fluency in a new language within 6 months",
+    "tasks": [
+      { "id": 13, "title": "Complete beginner course (A1 level)", "completed": false },
+      { "id": 14, "title": "Practice speaking 30 minutes daily", "completed": false },
+      { "id": 15, "title": "Read 10 articles in target language", "completed": false },
+      { "id": 16, "title": "Watch 5 movies with subtitles", "completed": false },
+      { "id": 17, "title": "Have first conversation with native speaker", "completed": false },
+      { "id": 18, "title": "Take intermediate proficiency test", "completed": false }
+    ]
+  },
+  {
+    "Id": 4,
+    "title": "Build Emergency Fund",
+    "category": "personal",
+    "description": "Save 6 months of expenses for financial security and peace of mind",
+    "tasks": [
+      { "id": 19, "title": "Calculate monthly expenses baseline", "completed": false },
+      { "id": 20, "title": "Open high-yield savings account", "completed": false },
+      { "id": 21, "title": "Set up automatic transfers", "completed": false },
+      { "id": 22, "title": "Save first $1,000 milestone", "completed": false },
+      { "id": 23, "title": "Reach 3-month expense goal", "completed": false },
+      { "id": 24, "title": "Complete 6-month emergency fund", "completed": false }
+    ]
+  },
+  {
+    "Id": 5,
+    "title": "Get in Shape",
+    "category": "health",
+    "description": "Comprehensive fitness program for strength, cardio, and overall health",
+    "tasks": [
+      { "id": 25, "title": "Establish workout routine (3x per week)", "completed": false },
+      { "id": 26, "title": "Create meal prep plan", "completed": false },
+      { "id": 27, "title": "Track daily water intake", "completed": false },
+      { "id": 28, "title": "Complete first fitness assessment", "completed": false },
+      { "id": 29, "title": "Achieve weight loss/gain target", "completed": false },
+      { "id": 30, "title": "Run 5K without stopping", "completed": false }
+    ]
+  },
+  {
+    "Id": 6,
+    "title": "Career Advancement",
+    "category": "work",
+    "description": "Strategic professional development for promotion or career change",
+    "tasks": [
+      { "id": 31, "title": "Update resume and LinkedIn profile", "completed": false },
+      { "id": 32, "title": "Identify skill gaps and training needs", "completed": false },
+      { "id": 33, "title": "Complete relevant certification", "completed": false },
+      { "id": 34, "title": "Network with industry professionals", "completed": false },
+      { "id": 35, "title": "Apply for target positions", "completed": false },
+      { "id": 36, "title": "Negotiate salary and benefits", "completed": false }
+    ]
+  },
+  {
+    "Id": 7,
+    "title": "Home Organization",
+    "category": "personal",
+    "description": "Declutter and organize living space for better productivity and peace of mind",
+    "tasks": [
+      { "id": 37, "title": "Declutter bedroom and closet", "completed": false },
+      { "id": 38, "title": "Organize kitchen and pantry", "completed": false },
+      { "id": 39, "title": "Set up home office workspace", "completed": false },
+      { "id": 40, "title": "Create storage solutions", "completed": false },
+      { "id": 41, "title": "Establish daily tidying routine", "completed": false },
+      { "id": 42, "title": "Donate unused items", "completed": false }
+    ]
+  },
+  {
+    "Id": 8,
+    "title": "Start a Side Business",
+    "category": "work",
+    "description": "Launch and grow a profitable side business from idea to revenue",
+    "tasks": [
+      { "id": 43, "title": "Research market and validate idea", "completed": false },
+      { "id": 44, "title": "Create business plan and budget", "completed": false },
+      { "id": 45, "title": "Register business and get licenses", "completed": false },
+      { "id": 46, "title": "Build minimum viable product", "completed": false },
+      { "id": 47, "title": "Launch marketing campaign", "completed": false },
+      { "id": 48, "title": "Achieve first $1,000 in revenue", "completed": false }
+    ]
+  },
+  {
+    "Id": 9,
+    "title": "Improve Sleep Quality",
+    "category": "health",
+    "description": "Develop healthy sleep habits for better rest and daytime energy",
+    "tasks": [
+      { "id": 49, "title": "Establish consistent bedtime routine", "completed": false },
+      { "id": 50, "title": "Create sleep-friendly environment", "completed": false },
+      { "id": 51, "title": "Limit screen time before bed", "completed": false },
+      { "id": 52, "title": "Track sleep patterns for 2 weeks", "completed": false },
+      { "id": 53, "title": "Optimize room temperature and lighting", "completed": false },
+      { "id": 54, "title": "Achieve 7-8 hours consistent sleep", "completed": false }
+    ]
+  },
+  {
+    "Id": 10,
+    "title": "Learn to Cook",
+    "category": "personal",
+    "description": "Master essential cooking skills and build a repertoire of healthy meals",
+    "tasks": [
+      { "id": 55, "title": "Learn basic knife skills and safety", "completed": false },
+      { "id": 56, "title": "Master 5 fundamental cooking techniques", "completed": false },
+      { "id": 57, "title": "Cook 20 different healthy recipes", "completed": false },
+      { "id": 58, "title": "Plan and prep meals for a week", "completed": false },
+      { "id": 59, "title": "Host dinner party for friends", "completed": false },
+      { "id": 60, "title": "Create personal recipe collection", "completed": false }
+    ]
+  },
+  {
+    "Id": 11,
+    "title": "Digital Detox",
+    "category": "health",
+    "description": "Reduce screen time and develop healthier technology habits",
+    "tasks": [
+      { "id": 61, "title": "Track current screen time usage", "completed": false },
+      { "id": 62, "title": "Remove social media apps from phone", "completed": false },
+      { "id": 63, "title": "Implement phone-free meal times", "completed": false },
+      { "id": 64, "title": "Create analog alternatives for entertainment", "completed": false },
+      { "id": 65, "title": "Establish tech-free bedroom policy", "completed": false },
+      { "id": 66, "title": "Achieve 2-hour daily reduction target", "completed": false }
+    ]
+  },
+  {
+    "Id": 12,
+    "title": "Complete Certification Program",
+    "category": "work",
+    "description": "Earn professional certification to advance career and increase earning potential",
+    "tasks": [
+      { "id": 67, "title": "Research and choose certification program", "completed": false },
+      { "id": 68, "title": "Register for courses and exams", "completed": false },
+      { "id": 69, "title": "Create study schedule and materials", "completed": false },
+      { "id": 70, "title": "Complete all required coursework", "completed": false },
+      { "id": 71, "title": "Pass certification exam", "completed": false },
+      { "id": 72, "title": "Update credentials and portfolio", "completed": false }
+    ]
+  }
+]
